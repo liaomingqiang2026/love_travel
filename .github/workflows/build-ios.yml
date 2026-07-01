@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: 📥 检出代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🛠 安装 Flutter
         uses: subosito/flutter-action@v2
@@ -43,14 +43,14 @@ jobs:
           echo "IPA 生成完成"
 
       - name: 📤 上传 IPA 制品
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 爱旅游APP-iOS
           path: build/ios/ipa/爱旅游APP.ipa
           if-no-files-found: error
 
       - name: 📤 上传 .app 包（备用）
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Runner-app
           path: build/ios/iphoneos/Runner.app
