@@ -1,0 +1,57 @@
+# 爱旅游 APP - Codemagic 云编译配置
+# 用于自动生成 iOS IPA 安装包
+# 文档: https://docs.codemagic.io/flutter-configuration/flutter-projects/
+
+workflows:
+  ios-build:
+    name: 编译 iOS IPA
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+
+    environment:
+      flutter: 3.0.0
+      xcode: latest
+      cocoapods: default
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+        - pattern: '*'
+          include: false
+
+    scripts:
+      - name: 📦 获取 Flutter 依赖
+        script: |
+          flutter pub get
+
+      - name: 🍎 安装 CocoaPods
+        script: |
+          cd ios
+          pod install --repo-update
+          cd ..
+
+      - name: 🏗 编译 iOS (Release)
+        script: |
+          flutter build ios --release --no-codesign
+
+      - name: 📦 打包 IPA
+        script: |
+          mkdir -p build/ios/ipa/Payload
+          cp -r build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa
+          zip -r 爱旅游APP.ipa Payload/
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
+
+    publishing:
+      email:
+        recipients:
+          - 2517970110@qq.com
+        notify:
+          success: true
+          failure: true
