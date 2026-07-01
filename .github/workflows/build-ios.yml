@@ -14,6 +14,12 @@ jobs:
       - name: 📥 检出代码
         uses: actions/checkout@v4
 
+      - name: 💎 安装 Ruby 3.1（兼容 Flutter 3.0 podhelper）
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler: 'none'
+
       - name: 🛠 安装 Flutter
         uses: subosito/flutter-action@v2
         with:
